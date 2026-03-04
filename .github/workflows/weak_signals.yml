@@ -1,0 +1,49 @@
+name: 🔍 Weak Signals Agent
+
+on:
+  schedule:
+    - cron: "0 7 * * 1"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run (nevytváří commit)"
+        required: false
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
+
+jobs:
+  run-agent:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install anthropic feedparser requests
+
+      - name: Run Weak Signals Agent
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          python weak_signals_agent.py
+
+      - name: Commit & push výsledky
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        run: |
+          git config user.name "Weak Signals Bot"
+          git config user.email "bot@signals.local"
+          git add docs/signals/
+          git diff --staged --quiet || git commit -m "🔍 Slabé signály - týden $(date +%Y-W%V)"
+          git push
