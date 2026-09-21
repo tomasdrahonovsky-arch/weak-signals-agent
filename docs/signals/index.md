@@ -7,6 +7,7 @@ title: Slabé signály — archiv
 
 | Vydání | Datum |
 |--------|-------|
+| [Týden 39/2026](signals-2026-39.html) | 2026-W39 |
 | [Týden 38/2026](signals-2026-38.html) | 2026-W38 |
 | [Týden 37/2026](signals-2026-37.html) | 2026-W37 |
 | [Týden 36/2026](signals-2026-36.html) | 2026-W36 |
